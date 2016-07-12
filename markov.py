@@ -58,7 +58,31 @@ def make_text(chains):
 
     text = ""
 
-    # your code goes here
+    # Choose a random key to start with.
+    key = choice(chains.keys())
+
+    # Add words from first key to text string.
+    text = text + key[0] + ' ' + key[1]
+
+    # Set state variable for loop
+    writing = True
+
+    # Write the poem
+    while writing:
+
+        # Randomly choose next word from key's value list
+        next_word = choice(chains[key])
+
+        # Add next word to text string
+        text = text + ' ' + next_word
+
+        # Create next key
+        key = ( key[1], next_word )
+
+        # Check whether created key exists in passed dictionary.
+        # If it doesn't, stop writing.
+        if not key in chains:
+            break
 
     return text
 
@@ -72,6 +96,6 @@ input_text = open_and_read_file(input_path)
 chains = make_chains(input_text)
 
 # Produce random text
-# random_text = make_text(chains)
+random_text = make_text(chains)
 
-# print random_text
+print random_text
