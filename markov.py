@@ -8,13 +8,10 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    #Creates a file object from the given text file.
-    file_object = open(file_path)
+    # Chains open() to create file object, then read() to create string.
+    contents = open(file_path).read()
 
-    #Bind variable to string containing file contents.
-    corpus_str = file_object.read()
-
-    return corpus_str
+    return contents
 
 
 def make_chains(text_string):
@@ -32,7 +29,30 @@ def make_chains(text_string):
 
     chains = {}
 
-    # your code goes here
+    # Split text_string on whitespace, creating list of words.
+    words = text_string.split()
+
+    #Iterate over indices. Use a range of 1 less than number of words
+    #because len(list) gives 1 more than maximum index of list.
+    for i in range(len(words)-1):
+
+        #Make a tuple to use as a key.
+        bigram = ( words[i], words[i+1] )
+
+        #Check whether the key we just made exists in chains. If not,
+        #add it, and set its value to [].
+        chains[bigram] = chains.get(bigram, [])
+
+        #Test whether we can access a word two indices after current word.
+        #If we can, bind that word to a new variable and append it to the
+        #current key's value.
+        try:
+            new_word = words[i+2]
+            chains[bigram].append(new_word)
+
+        #If we can't access that index, leave the loop. 
+        except IndexError:
+            break
 
     return chains
 
@@ -56,6 +76,6 @@ input_text = open_and_read_file(input_path)
 chains = make_chains(input_text)
 
 # Produce random text
-random_text = make_text(chains)
+# random_text = make_text(chains)
 
-print random_text
+# print random_text
