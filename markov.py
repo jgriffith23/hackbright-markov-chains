@@ -8,7 +8,7 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    # Chains open() to create file object, then read() to create string.
+    # Chain open() to create file object, then read() to create string.
     contents = open(file_path).read()
 
     return contents
@@ -32,27 +32,23 @@ def make_chains(text_string):
     # Split text_string on whitespace, creating list of words.
     words = text_string.split()
 
-    #Iterate over indices. Use a range of 1 less than number of words
-    #because len(list) gives 1 more than maximum index of list.
-    for i in range(len(words)-1):
+    # Iterate over indices. Use a range of 2 less than number of words (i.e.,
+    # len(list)) so that our final key-value pair is made from the last three
+    # words.
 
-        #Make a tuple to use as a key.
+    for i in range(len(words)-2):
+
+        # Make a tuple to use as a key.
         bigram = ( words[i], words[i+1] )
 
-        #Check whether the key we just made exists in chains. If not,
-        #add it, and set its value to [].
+        # Check whether the key we just made exists in chains. If not,
+        # add it, and set its value to [].
         chains[bigram] = chains.get(bigram, [])
 
-        #Test whether we can access a word two indices after current word.
-        #If we can, bind that word to a new variable and append it to the
-        #current key's value.
-        try:
-            new_word = words[i+2]
-            chains[bigram].append(new_word)
+        # Update the key's value to be the word that follows this occurance of
+        # the key. ".append" works in place; don't need to use "=".
 
-        #If we can't access that index, leave the loop. 
-        except IndexError:
-            break
+        chains[bigram].append(words[i+2])
 
     return chains
 
