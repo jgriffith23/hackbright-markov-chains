@@ -59,16 +59,19 @@ def make_chains(text_string, n):
     return chains
 
 
-def make_text(chains):
+def make_text(chains,characters=140):
     """Takes dictionary of markov chains; returns random text."""
 
     text = ""
+    words = []
 
     # Choose a random key to start with.
     key = choice(chains.keys())
 
     # Add words from first key to text string.
-    text = text + key[0] + ' ' + key[1]
+    for item in key:
+        # text = text + ' ' item
+        words.append(item)
 
     # Set state variable for loop
     writing = True
@@ -80,16 +83,18 @@ def make_text(chains):
         next_word = choice(chains[key])
 
         # Add next word to text string
-        text = text + ' ' + next_word
+        words.append(next_word)
 
         # Create next key
-        key = ( key[1], next_word )
+        key = key[1:] + ( next_word, )
 
         # Check whether created key exists in passed dictionary.
         # If it doesn't, stop writing.
         if not key in chains:
             break
 
+    text = (' ').join(words)
+    text = text[:characters-1]
     return text
 
 
@@ -102,6 +107,6 @@ input_text = open_and_read_file(input_path)
 chains = make_chains(input_text, 2)
 
 # Produce random text
-#random_text = make_text(chains)
+random_text = make_text(chains)
 
-#print random_text
+print random_text
