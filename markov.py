@@ -82,13 +82,14 @@ def make_capital_keys(chains):
     return cap_keys
 
 
-def make_text(chains):
-    """Takes dictionary of markov chains and a character limit, which defaults
-    to 140 characters; returns random text."""
+def make_text(chains, desired_sentences=2):
+    """Takes dictionary of markov chains and desired number of sentences;
+    returns random text of desired length."""
 
     text = ""
     words = []
 
+    # Make a list of starter keys that all begin with a capital letter.
     starter_keys = make_capital_keys(chains)
 
     # Choose a random key to start with.
@@ -99,17 +100,20 @@ def make_text(chains):
         # text = text + ' ' item
         words.append(item)
 
-    # Set state variable for loop
-    writing = True
-
     # Write the poem
-    while writing:
+    while desired_sentences > 0:
 
         # Randomly choose next word from key's value list
         next_word = choice(chains[key])
 
         # Add next word to list of words
         words.append(next_word)
+
+        # Check whether next_word ends with terminal punctuation. If so, update
+        # count of sentences.
+
+        if next_word.endswith(('.','?','!')):
+            desired_sentences -= 1
 
         # Create next key
         key = key[1:] + ( next_word, )
