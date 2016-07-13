@@ -60,7 +60,8 @@ def make_chains(text_string, n):
 
 
 def make_text(chains,characters=140):
-    """Takes dictionary of markov chains; returns random text."""
+    """Takes dictionary of markov chains and a character limit, which defaults
+    to 140 characters; returns random text."""
 
     text = ""
     words = []
@@ -68,7 +69,7 @@ def make_text(chains,characters=140):
     # Choose a random key to start with.
     key = choice(chains.keys())
 
-    # Add words from first key to text string.
+    # Add each element of key tuple to list of words
     for item in key:
         # text = text + ' ' item
         words.append(item)
@@ -82,7 +83,7 @@ def make_text(chains,characters=140):
         # Randomly choose next word from key's value list
         next_word = choice(chains[key])
 
-        # Add next word to text string
+        # Add next word to list of words
         words.append(next_word)
 
         # Create next key
@@ -93,11 +94,14 @@ def make_text(chains,characters=140):
         if not key in chains:
             break
 
+    # Join all elements in word list into one string
     text = (' ').join(words)
+
+    # Remove all but 140 characters from string
     text = text[:characters-1]
     return text
 
-
+# Take text file as command line argument
 input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
