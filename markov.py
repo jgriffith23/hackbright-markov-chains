@@ -58,16 +58,41 @@ def make_chains(text_string, n):
 
     return chains
 
+def make_capital_keys(chains):
+    """Given a dictionary, creates a list of keys that start with a capital.
 
-def make_text(chains,characters=140):
+    Expects dictionary keys to be tuples, and checks capitalization
+    of first element in each tuple.
+
+    """
+    
+    # Start with an empty list to contain keys that start with capital letters.
+    cap_keys = []
+
+    # Get list of all keys in chains.
+    keys = chains.keys()
+
+    # Iterate over list of keys. If the first item in the tuple is not
+    # equivalent to the lowercase version of that item, append it to the list
+    # of keys that start with capital letters. 
+    for key in keys:
+        if key[0] != key[0].lower():
+            cap_keys.append(key)
+
+    return cap_keys
+
+
+def make_text(chains):
     """Takes dictionary of markov chains and a character limit, which defaults
     to 140 characters; returns random text."""
 
     text = ""
     words = []
 
+    starter_keys = make_capital_keys(chains)
+
     # Choose a random key to start with.
-    key = choice(chains.keys())
+    key = choice(starter_keys)
 
     # Add each element of key tuple to list of words
     for item in key:
@@ -97,8 +122,6 @@ def make_text(chains,characters=140):
     # Join all elements in word list into one string
     text = (' ').join(words)
 
-    # Remove all but 140 characters from string
-    text = text[:characters-1]
     return text
 
 # Take text file as command line argument
